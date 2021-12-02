@@ -118,6 +118,7 @@ def paceClick():
 		raceLength = int(entry_1.get())#amount of selected distance
 		raceMinutes = int(entry_2.get())#minutes race took
 		raceSeconds = int(entry_3.get())#seconds race took
+		perSplit = 0
 
 		distanceType = raceDistance.get()#miles or meters
 
@@ -134,6 +135,31 @@ def paceClick():
 		drop2.grid(row = 2, column = 5, columnspan = 2)
 
 
+		def calculate2():
+			desType = desrireType.get()
+			if distanceType == "Meters":
+				ratio = raceLength / 400 #ratio of raceLength compared to a quarter mile
+				quarterSplit = totalSec / ratio #finding how long quarter mile split is
+				if desType == "Kilometer":
+					perSplit = quarterSplit * 2.5#converting to a kilometer
+				if desType == "Mile":
+					perSplit = quarterSplit * 4#converting to a mile
+				
+			if distanceType == "Miles":
+				base = raceLength * 4 #converting number of miles ran to quarter miles ran
+				quarterSplit = totalSec / base #finding how quick each quarter mile was
+				if desType == "Kilometer":
+					perSplit = quarterSplit * 2.5
+				if desType == "Mile":
+					perSplit = quarterSplit * 4
+			minutesPer = int(perSplit / 60)
+			secondsPer = perSplit % 60
+			
+			label_7 = Label(paceWindow, text = "That is an average of: " + str(minutesPer) + " minutes and: " + str(secondsPer) + " seconds per " + str(desType))
+			label_7.grid(row = 4, column = 0, columnspan = 8)
+
+		button_enter = Button(paceWindow, text = "Enter", bg = "red", padx = 50, command = calculate2)
+		button_enter.grid(row = 3, column = 0, columnspan = 8)
 
 
 	button_continue = Button(paceWindow, text = "Continue", bg = "red", padx = 50, command = paceFind)#button for user to click when input is ready
