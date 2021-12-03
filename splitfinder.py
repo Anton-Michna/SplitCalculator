@@ -1,3 +1,4 @@
+#Anton Michna
 from tkinter import *
 
 root = Tk() #defining the window that everything goes into
@@ -6,6 +7,14 @@ root.title("Runner.net")#defining the title of the window
 
 openLabel = Label(root, text = "Calculate: ")#opening prompt
 openLabel.grid(row = 0, column = 0, columnspan = 2)
+
+def callback(input):
+	if input.isdigit():
+		return True
+	elif input == "":
+		return True
+	else:
+		return False
 
 
 def splitClick():#runs when user wants to find splits required for a certain pace
@@ -18,10 +27,13 @@ def splitClick():#runs when user wants to find splits required for a certain pac
 	label_3 = Label(splitWindow, text = " second pace per: ")
 	label_4 = Label(splitWindow, text = " for: ")
 
-	entry_1 = Entry(splitWindow, width = 5)#creating user input spaces
-	entry_2 = Entry(splitWindow, width = 5)
-	entry_3 = Entry(splitWindow, width = 5)
+	entry_1 = Entry(splitWindow, validate = "key", width = 5)#creating user input spaces
+	entry_2 = Entry(splitWindow, validate = "key", width = 5)
+	entry_3 = Entry(splitWindow, validate = "key", width = 5)
 
+	entry_1['validatecommand'] = (entry_1.register(callback), '%P')#only allowing user to enter numbers in text boxes
+	entry_2['validatecommand'] = (entry_2.register(callback), '%P')
+	entry_3['validatecommand'] = (entry_3.register(callback), '%P')
 
 	distance = StringVar(splitWindow)#creating dropdown box for use to choose unit of distance
 	distance.set("Meters")
@@ -86,7 +98,7 @@ def splitClick():#runs when user wants to find splits required for a certain pac
 
 	splitWindow.mainloop()
 
-def paceClick():
+def paceClick():#runs when user wants to find average pace of race that they ran
 	paceWindow = Tk()
 	paceWindow.title("Pace Calculator")
 
@@ -95,10 +107,15 @@ def paceClick():
 	label_3 = Label(paceWindow, text = "minutes and: ")#6
 	label_4 = Label(paceWindow, text = "seconds ")#8
 
-	entry_1 = Entry(paceWindow, width = 7)#2
-	entry_2 = Entry(paceWindow, width = 5)#5
-	entry_3 = Entry(paceWindow, width = 5)#7
+	entry_1 = Entry(paceWindow, validate = "key", width = 7)#2
+	entry_2 = Entry(paceWindow, validate = "key", width = 5)#5
+	entry_3 = Entry(paceWindow, validate = "key", width = 5)#7
 
+	entry_1['validatecommand'] = (entry_1.register(callback), '%P')#only allowing user to enter numbers in text boxes
+	entry_2['validatecommand'] = (entry_2.register(callback), '%P')
+	entry_3['validatecommand'] = (entry_3.register(callback), '%P')
+
+	
 	raceDistance = StringVar(paceWindow)#dropdown for the distance of users race
 	raceDistance.set("Meters")
 	drop = OptionMenu(paceWindow, raceDistance, "Meters", "Miles")#3
@@ -114,7 +131,7 @@ def paceClick():
 	label_4.grid(row = 0, column = 7)
 
 
-	def paceFind():
+	def paceFind():#runs when user has input the first three values to calculate average pace
 		raceLength = int(entry_1.get())#amount of selected distance
 		raceMinutes = int(entry_2.get())#minutes race took
 		raceSeconds = int(entry_3.get())#seconds race took
@@ -135,30 +152,34 @@ def paceClick():
 		drop2.grid(row = 2, column = 5, columnspan = 2)
 
 
-		def calculate2():
+		def calculate2():#runs after user has input final data, kilometer or mile pace, then average pace is calculated
 			desType = desrireType.get()
-			if distanceType == "Meters":
+
+			if distanceType == "Meters":#runs if user's pace was in meters
 				ratio = raceLength / 400 #ratio of raceLength compared to a quarter mile
 				quarterSplit = totalSec / ratio #finding how long quarter mile split is
-				if desType == "Kilometer":
+				
+				if desType == "Kilometer":#runs based on if user wants per kilometer or mile pace
 					perSplit = quarterSplit * 2.5#converting to a kilometer
 				if desType == "Mile":
 					perSplit = quarterSplit * 4#converting to a mile
 				
-			if distanceType == "Miles":
+			if distanceType == "Miles":#runs if user's race was in miles
 				base = raceLength * 4 #converting number of miles ran to quarter miles ran
 				quarterSplit = totalSec / base #finding how quick each quarter mile was
+
 				if desType == "Kilometer":
 					perSplit = quarterSplit * 2.5
 				if desType == "Mile":
 					perSplit = quarterSplit * 4
-			minutesPer = int(perSplit / 60)
+
+			minutesPer = int(perSplit / 60)#converting seconds total into minutes and seconds break down
 			secondsPer = perSplit % 60
 			
 			label_7 = Label(paceWindow, text = "That is an average of: " + str(minutesPer) + " minutes and: " + str(secondsPer) + " seconds per " + str(desType))
-			label_7.grid(row = 4, column = 0, columnspan = 8)
+			label_7.grid(row = 4, column = 0, columnspan = 8)#displaying calculated pace
 
-		button_enter = Button(paceWindow, text = "Enter", bg = "red", padx = 50, command = calculate2)
+		button_enter = Button(paceWindow, text = "Enter", bg = "red", padx = 50, command = calculate2)#creating button once user has completed input
 		button_enter.grid(row = 3, column = 0, columnspan = 8)
 
 
@@ -166,7 +187,7 @@ def paceClick():
 	button_continue.grid(row = 1, column = 0, columnspan = 8)#adding button to grid
 
 
-	paceWindow.mainloop()
+	paceWindow.mainloop()#closing paceWindow loop
 
 
 
@@ -176,4 +197,4 @@ button_avePace = Button(root, text = "Average Pace of race", fg = "white", bg = 
 button_splits.grid(row = 1, column = 0)
 button_avePace.grid(row = 1, column = 1)
 
-root.mainloop()
+root.mainloop()#runs until program is closed
