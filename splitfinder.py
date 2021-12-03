@@ -4,9 +4,17 @@ from tkinter import *
 root = Tk() #defining the window that everything goes into
 root.title("Runner.net")#defining the title of the window
 
+windowWidth = root.winfo_reqwidth()#gets height and width of screen
+windowHeight = root.winfo_reqheight()
+
+positionRight = int(root.winfo_screenwidth()/2 - windowWidth/2)# Gets both half the screen width/height and window width/height
+positionDown = int(root.winfo_screenheight()/2 - windowHeight/2)
+ 
+root.geometry("+{}+{}".format(positionRight, positionDown))# Positions the window in the center of the page
 
 openLabel = Label(root, text = "Calculate: ")#opening prompt
 openLabel.grid(row = 0, column = 0, columnspan = 2)
+#openLabel.place(relx = 0.5, rely = 0.5, anchor = CENTER)
 
 def callback(input):
 	if input.isdigit():
@@ -20,6 +28,14 @@ def callback(input):
 def splitClick():#runs when user wants to find splits required for a certain pace
 	splitWindow = Tk()
 	splitWindow.title("Split Finder")
+
+	windowWidth = splitWindow.winfo_reqwidth()#gets height and width of screen
+	windowHeight = splitWindow.winfo_reqheight()
+
+	positionRight = int(splitWindow.winfo_screenwidth()/2 - windowWidth/2)# Gets both half the screen width/height and window width/height
+	positionDown = int(splitWindow.winfo_screenheight()/2 - windowHeight/2)
+ 
+	splitWindow.geometry("+{}+{}".format(positionRight, positionDown))# Positions the window in the center of the page
 
 
 	label_1 = Label(splitWindow, text = "I want to run: ")#creating labels for user's prompt
@@ -92,15 +108,20 @@ def splitClick():#runs when user wants to find splits required for a certain pac
 	
 	button_enter = Button(splitWindow, text = "Enter", bg = "blue", padx = 50, command = calculate)#button for user to click when input is ready
 	button_enter.grid(row = 1, column = 0, columnspan = 9)#adding button to grid
-	
-	
-	
 
 	splitWindow.mainloop()
 
 def paceClick():#runs when user wants to find average pace of race that they ran
 	paceWindow = Tk()
 	paceWindow.title("Pace Calculator")
+
+	windowWidth = paceWindow.winfo_reqwidth()#gets height and width of screen
+	windowHeight = paceWindow.winfo_reqheight()
+
+	positionRight = int(paceWindow.winfo_screenwidth()/2 - windowWidth/2)# Gets both half the screen width/height and window width/height
+	positionDown = int(paceWindow.winfo_screenheight()/2 - windowHeight/2)
+ 
+	paceWindow.geometry("+{}+{}".format(positionRight, positionDown))# Positions the window in the center of the page
 
 	label_1 = Label(paceWindow, text = "I ran: ")#creating labels for user's prompt #1
 	label_2 = Label(paceWindow, text = "in: ")#4
